@@ -2,17 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, linear } from "framer-motion";
+import { motion } from "framer-motion";
 
-/**
- * --- Dependency Mocks for Vercel Deployment ---
- *
- * NOTE: For a real application, you must replace these mocks
- * with the actual imports from your file system (e.g., '@/app/components/NolanLoader').
- * These mocks are only for ensuring the code in *this file* compiles and deploys.
- */
+/* ---------------- MOCKS TO ENSURE DEPLOY WORKS ---------------- */
+// Remove these mocks later and replace with your real imports.
 
-// MOCK: Project Type
 export type Project = {
   id: number;
   title: string;
@@ -21,48 +15,45 @@ export type Project = {
   caseStudyId: string;
 };
 
-// MOCK: NolanLoader Component
 const NolanLoader = () => (
   <div className="flex items-center justify-center h-screen bg-black text-white">
     <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
   </div>
 );
 
-// MOCK: allProjects Data
 const allProjects: Project[] = [
   {
     id: 1,
     title: "Phocus Water Brand Film",
     description: "Launch campaign cinematic assets.",
-    imageUrl: "/mock-project-1.jpg", // Replace with an actual image path
+    imageUrl: "/mock-project-1.jpg",
     caseStudyId: "phocus",
   },
   {
     id: 2,
     title: "Minimalist Coffee Shop",
-    description: "Visual identity and social content.",
-    imageUrl: "/mock-project-2.jpg", // Replace with an actual image path
-    caseStudyId: "minimalist-cafe",
+    description: "Visual identity & reels.",
+    imageUrl: "/mock-project-2.jpg",
+    caseStudyId: "cafe",
   },
   {
     id: 3,
-    title: "Global Travel Vlogger",
-    description: "Series editing and narrative structure.",
-    imageUrl: "/mock-project-3.jpg", // Replace with an actual image path
-    caseStudyId: "travel-vlog",
+    title: "Travel Vlogger Series",
+    description: "Narrative-driven edits.",
+    imageUrl: "/mock-project-3.jpg",
+    caseStudyId: "travel",
   },
   {
     id: 4,
     title: "Tech Startup Explainer",
-    description: "Animated explainer video production.",
-    imageUrl: "/mock-project-4.jpg", // Replace with an actual image path
-    caseStudyId: "tech-explainer",
+    description: "Animated explainer.",
+    imageUrl: "/mock-project-4.jpg",
+    caseStudyId: "tech",
   },
 ];
-// END OF MOCKS
+/* -------------------------------------------------------------- */
 
-/* ---------------- Data ---------------- */
-const featuredProjects: Project[] = allProjects.slice(0, 4);
+const featuredProjects = allProjects.slice(0, 4);
 
 const testimonials = [
   {
@@ -82,17 +73,16 @@ const testimonials = [
   },
 ];
 
-/* ---------------- Branding ---------------- */
+/* ---------------- BRAND COLORS ---------------- */
 const BRAND_RED = "#C1272D";
-const BRAND_BLACK = "#0A0A0A";
 
-/* ---------------- Motion Presets ---------------- */
+/* ---------------- MOTION PRESETS (SAFE) ---------------- */
 const heroPan = {
   initial: { scale: 1.06 },
-  animate: { scale: 1.0 },
+  animate: { scale: 1 },
   transition: {
     duration: 18,
-    ease: linear,
+    ease: "linear" as const, // FIXED — Works in ALL Framer versions
     repeat: Infinity,
     repeatType: "mirror" as const,
   },
@@ -102,16 +92,19 @@ const fadeInUp = {
   initial: { opacity: 0, y: 18 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.9, ease: linear },
+  transition: {
+    duration: 0.9,
+    ease: "linear" as const, // FIXED
+  },
 };
 
-/* ---------------- Page ---------------- */
+/* ---------------- PAGE ---------------- */
 export default function HomePage() {
   return (
     <>
       <NolanLoader />
 
-      <main className="antialiased font-sans text-[#0A0A0A]">
+      <main className="antialiased font-sans text-black">
         {/* ================= HERO ================= */}
         <section className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-black">
           <motion.div
@@ -121,14 +114,14 @@ export default function HomePage() {
             transition={heroPan.transition}
           >
             <Image
-              src="/hero-kitchen.jpeg" // Make sure this image exists in your public folder
-              alt="Hero cinematic frame"
+              src="/hero-kitchen.jpeg"
+              alt="Hero"
               fill
               priority
               className="object-cover object-center"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
           </motion.div>
 
           <div className="relative z-20 px-6 text-center max-w-3xl">
@@ -143,7 +136,6 @@ export default function HomePage() {
               crafted with precision and intention.
             </p>
 
-            {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/portfolio"
@@ -168,49 +160,46 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ================= PROBLEMS WE SOLVE ================= */}
+        {/* ================= PROBLEMS ================= */}
         <section className="bg-white py-20">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto">
-              <div
-                className="w-16 h-[3px] mx-auto mb-4"
-                style={{ background: BRAND_RED }}
-              />
-              <h2 className="text-3xl md:text-4xl font-medium">
-                Problems We Solve For Brands
-              </h2>
-              <p className="mt-4 text-gray-600">
-                We identify friction, then build cinematic, measurable
-                solutions.
-              </p>
-            </div>
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div
+              className="w-16 h-[3px] mx-auto mb-4"
+              style={{ background: BRAND_RED }}
+            />
+            <h2 className="text-3xl md:text-4xl font-medium">
+              Problems We Solve For Brands
+            </h2>
+            <p className="mt-4 text-gray-600 max-w-xl mx-auto">
+              We identify friction, then build cinematic, measurable solutions.
+            </p>
 
-            <div className="mt-10 grid md:grid-cols-2 gap-8">
+            <div className="mt-10 grid md:grid-cols-2 gap-8 text-left">
               {[
                 [
                   "Our content isn’t converting.",
-                  "We create short-form + hero assets built to convert without losing craft.",
+                  "We build cinematic assets engineered to convert.",
                 ],
                 [
-                  "Our page looks dead / inconsistent.",
-                  "We deliver a cohesive visual language that reads premium everywhere.",
+                  "Our page looks dead.",
+                  "We create a cohesive premium visual identity.",
                 ],
                 [
-                  "We don’t have a system for monthly content.",
-                  "A repeatable content engine tailored to your brand cadence.",
+                  "We lack a monthly content system.",
+                  "We design a branded plug-and-play content engine.",
                 ],
                 [
                   "We get views but no leads.",
-                  "Narrative-first creatives with intentional CTAs that drive outcomes.",
+                  "Narrative-first creatives that drive action.",
                 ],
               ].map(([title, desc], i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 bg-white border border-black/5 shadow-sm rounded-xl"
+                  className="p-6 bg-white rounded-xl border border-black/5 shadow-sm"
                 >
                   <h3 className="text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 text-gray-600">{desc}</p>
+                  <p className="text-gray-600 mt-2">{desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -219,38 +208,36 @@ export default function HomePage() {
 
         {/* ================= SERVICES ================= */}
         <section className="py-20 bg-[#fafafa]">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto">
-              <div
-                className="w-16 h-[3px] mx-auto mb-4"
-                style={{ background: BRAND_RED }}
-              />
-              <h3 className="text-3xl md:text-4xl font-medium">Our Services</h3>
-              <p className="mt-4 text-gray-600">
-                End-to-end production, social-first systems, and on-demand
-                studio support.
-              </p>
-            </div>
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div
+              className="w-16 h-[3px] mx-auto mb-4"
+              style={{ background: BRAND_RED }}
+            />
+            <h3 className="text-3xl md:text-4xl font-medium">Our Services</h3>
+            <p className="mt-4 text-gray-600 max-w-xl mx-auto">
+              End-to-end production, social systems, and on-demand studio
+              support.
+            </p>
 
             <div className="mt-10 grid md:grid-cols-3 gap-8">
               {[
                 [
                   "End-to-End Production",
-                  "Script, shoot, edit, color and deliver cinematic hero assets.",
+                  "Script, shoot, edit, color — everything.",
                 ],
                 [
                   "Social-First Content",
-                  "Hooks, reels and repurposes engineered for retention and conversion.",
+                  "Hooks, reels, repurposed edits, strategy.",
                 ],
                 [
                   "On-Demand Creative",
-                  "Plug-in crew, editors and creative direction on demand.",
+                  "Flexible crew, editors and creative direction.",
                 ],
               ].map(([title, desc], i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 bg-white border border-black/5 shadow-sm rounded-xl"
+                  className="p-6 bg-white rounded-xl border border-black/5 shadow-sm"
                 >
                   <h4
                     className="text-lg font-semibold"
@@ -258,14 +245,14 @@ export default function HomePage() {
                   >
                     {title}
                   </h4>
-                  <p className="mt-2 text-gray-600">{desc}</p>
+                  <p className="text-gray-600 mt-2">{desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ================= PORTFOLIO ================= */}
+        {/* ================= WORK ================= */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-10">
@@ -277,7 +264,7 @@ export default function HomePage() {
                 Work That Speaks for Itself
               </h3>
               <p className="mt-3 text-gray-600">
-                Selected projects. Studio presentation. Clean stills.
+                Selected studio projects displayed cleanly.
               </p>
             </div>
 
@@ -286,20 +273,19 @@ export default function HomePage() {
                 <Link
                   key={p.id}
                   href={`/case-studies/${p.caseStudyId}`}
-                  className="group block rounded-xl overflow-hidden bg-white shadow-sm border border-black/5"
+                  className="group block rounded-xl overflow-hidden bg-white border border-black/5 shadow-sm"
                 >
                   <div className="h-[220px] bg-gray-100 overflow-hidden">
                     <Image
-                      src={p.imageUrl} // Use the mocked imageUrl
+                      src={p.imageUrl}
                       alt={p.title}
                       width={1200}
                       height={720}
                       className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                     />
                   </div>
-
                   <div className="p-4">
-                    <h4 className="font-medium text-black">{p.title}</h4>
+                    <h4 className="font-medium">{p.title}</h4>
                     <p className="text-sm text-gray-600 mt-1">
                       {p.description}
                     </p>
@@ -316,30 +302,26 @@ export default function HomePage() {
 
         {/* ================= TESTIMONIALS ================= */}
         <section className="py-20 bg-[#fff8f8]">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto">
-              <div
-                className="w-16 h-[3px] mx-auto mb-4"
-                style={{ background: BRAND_RED }}
-              />
-              <h3 className="text-3xl md:text-4xl font-medium">
-                What Our Clients Say
-              </h3>
-              <p className="mt-4 text-gray-600">
-                Editorial-style testimonials from founders and creative leads.
-              </p>
-            </div>
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div
+              className="w-16 h-[3px] mx-auto mb-4"
+              style={{ background: BRAND_RED }}
+            />
+            <h3 className="text-3xl md:text-4xl font-medium">
+              What Our Clients Say
+            </h3>
+            <p className="mt-4 text-gray-600">
+              Clean editorial-style feedback.
+            </p>
 
             <div className="mt-10 grid md:grid-cols-3 gap-8">
               {testimonials.map((t, i) => (
                 <motion.blockquote
                   key={i}
                   {...fadeInUp}
-                  className="p-8 bg-white border border-black/5 shadow-sm rounded-xl"
+                  className="p-8 bg-white rounded-xl border border-black/5 shadow-sm"
                 >
-                  <p className="italic text-gray-700 leading-relaxed">
-                    “{t.quote}”
-                  </p>
+                  <p className="italic text-gray-700">“{t.quote}”</p>
                   <footer
                     className="mt-6 text-sm font-semibold"
                     style={{ color: BRAND_RED }}
@@ -354,31 +336,28 @@ export default function HomePage() {
 
         {/* ================= CTA ================= */}
         <section className="py-24 bg-white text-center">
-          <div className="max-w-4xl mx-auto px-6">
-            <h3 className="text-3xl md:text-4xl font-medium">
-              Ready to Tell Your Story?
-            </h3>
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-              We’ll plan a short strategy call and a concise creative roadmap to
-              launch your first campaign.
-            </p>
+          <h3 className="text-3xl md:text-4xl font-medium">
+            Ready to Tell Your Story?
+          </h3>
+          <p className="mt-4 text-gray-600 max-w-xl mx-auto">
+            Book a strategy call & get a clear creative roadmap.
+          </p>
 
-            <div className="mt-8 flex justify-center gap-4">
-              <Link
-                href="/contact"
-                className="bg-white text-black px-8 py-3 rounded-md font-medium shadow-sm hover:shadow-md transition"
-              >
-                Book a Strategy Call
-              </Link>
+          <div className="mt-8 flex justify-center gap-4">
+            <Link
+              href="/contact"
+              className="bg-white text-black px-8 py-3 rounded-md font-medium shadow-sm hover:shadow-md transition"
+            >
+              Book a Strategy Call
+            </Link>
 
-              <Link
-                href="/contact"
-                className="text-white px-8 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
-                style={{ background: BRAND_RED }}
-              >
-                Get a Quote
-              </Link>
-            </div>
+            <Link
+              href="/contact"
+              className="text-white px-8 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
+              style={{ backgroundColor: BRAND_RED }}
+            >
+              Get a Quote
+            </Link>
           </div>
         </section>
       </main>
