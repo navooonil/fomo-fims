@@ -3,134 +3,120 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { MenuIcon, XIcon } from "./icons";
+import { motion, AnimatePresence } from "framer-motion";
+
+const BRAND_RED = "#C1272D";
 
 const navLinks = [
   { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
   { name: "Services", path: "/services" },
   { name: "Work", path: "/portfolio" },
+  { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
 
 export default function Header() {
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
+  // Scroll shadow effect
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handler = () => setIsScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-lg border-b border-gray-200"
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_6px_rgba(0,0,0,0.08)]"
           : "bg-white"
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* --- LOGO (fixed, cinematic, not cropped) --- */}
-          <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-[46px] h-[46px]">
-                <Image
-                  src="/logo.jpeg"
-                  alt="Fomo Films Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
+      <div className="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between">
+        {/* LOGO */}
+        <Link href="/" aria-label="Home" className="flex items-center">
+          <Image
+            src="/logo.jpeg"
+            alt="FOMO Films Logo"
+            width={120}
+            height={45}
+            className="object-contain"
+            priority
+          />
+        </Link>
 
-              <span className="hidden sm:block font-heading text-xl font-semibold tracking-wide text-gray-900">
-                FOMO FILMS
-              </span>
-            </Link>
-          </motion.div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6 ml-10">
-            {navLinks.map((link) => (
-              <motion.div key={link.name} whileHover={{ y: -2 }}>
-                <Link
-                  href={link.path}
-                  className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                    pathname === link.path
-                      ? "text-brand-red font-semibold"
-                      : "text-gray-600 hover:text-brand-red"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              </motion.div>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        {/* DESKTOP NAV */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <motion.div key={link.path} whileHover={{ y: -2 }}>
               <Link
-                href="/contact"
-                className="ml-4 px-4 py-2 border border-brand-red text-brand-red rounded-md text-sm font-medium hover:bg-brand-red hover:text-white transition-all duration-300"
-              >
-                Let&apos;s Talk
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden -mr-2">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              aria-expanded={isOpen}
-              aria-label="Toggle navigation"
-              className="p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-red"
-            >
-              {isOpen ? <XIcon /> : <MenuIcon />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-white shadow-sm"
-        >
-          <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
                 href={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  pathname === link.path
-                    ? "text-brand-red bg-gray-100 font-semibold"
-                    : "text-gray-600 hover:text-brand-red hover:bg-gray-100"
-                }`}
+                className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
               >
                 {link.name}
               </Link>
-            ))}
+            </motion.div>
+          ))}
+        </nav>
 
-            <Link
-              href="/contact"
-              onClick={() => setIsOpen(false)}
-              className="block w-full mt-4 px-4 py-2 border border-brand-red text-brand-red rounded-md text-sm font-medium hover:bg-brand-red hover:text-white transition-all duration-300"
-            >
-              Let&apos;s Talk
-            </Link>
-          </div>
-        </motion.div>
-      )}
+        {/* DESKTOP CTA */}
+        <div className="hidden md:block">
+          <Link
+            href="/contact"
+            className="px-5 py-2 rounded-md text-sm font-medium text-white transition-all"
+            style={{ backgroundColor: BRAND_RED }}
+          >
+            Let’s Talk
+          </Link>
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden p-2 rounded-md focus:outline-none"
+          aria-label="Menu"
+        >
+          <div className="w-6 h-[2px] bg-black mb-1"></div>
+          <div className="w-6 h-[2px] bg-black mb-1"></div>
+          <div className="w-6 h-[2px] bg-black"></div>
+        </button>
+      </div>
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden bg-white border-t border-gray-200 shadow-md"
+          >
+            <div className="px-5 py-4 flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-2 text-gray-700 text-base hover:text-black transition"
+                >
+                  {link.name}
+                </Link>
+              ))}
+
+              <Link
+                href="/contact"
+                onClick={() => setIsOpen(false)}
+                className="mt-3 w-full py-2 text-center rounded-md font-medium text-white"
+                style={{ backgroundColor: BRAND_RED }}
+              >
+                Let’s Talk
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

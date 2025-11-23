@@ -7,7 +7,7 @@ import NolanLoader from "@/app/components/NolanLoader";
 import { allProjects } from "@/lib/data";
 import type { Project } from "@/lib/types";
 
-/* -------- data -------- */
+/* ---------------- Data ---------------- */
 const featuredProjects: Project[] = allProjects.slice(0, 4);
 
 const testimonials = [
@@ -28,11 +28,11 @@ const testimonials = [
   },
 ];
 
-/* -------- design tokens -------- */
+/* ---------------- Brand Tokens ---------------- */
 const BRAND_RED = "#C1272D";
 const BRAND_BLACK = "#0A0A0A";
 
-/* -------- motion presets -------- */
+/* ---------------- Animation Presets ---------------- */
 const heroPan = {
   initial: { scale: 1.06 },
   animate: { scale: 1.0 },
@@ -40,7 +40,7 @@ const heroPan = {
     duration: 18,
     ease: "linear",
     repeat: Infinity,
-    repeatType: "reverse",
+    repeatType: "mirror" as const, // FIXED FOR TS
   },
 };
 
@@ -51,16 +51,16 @@ const fadeInUp = {
   transition: { duration: 0.9, ease: "easeOut" },
 };
 
-/* -------- page -------- */
+/* ---------------- Page ---------------- */
 export default function HomePage() {
   return (
     <>
-      {/* cinematic loader */}
+      {/* Loader */}
       <NolanLoader />
 
       <main className="antialiased font-sans text-[#0A0A0A]">
-        {/* ================= HERO — Leica Slow Cinematic Pan ================= */}
-        <section className="relative w-full h-screen min-h-[720px] flex items-center justify-center overflow-hidden bg-black">
+        {/* ================= HERO ================= */}
+        <section className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-black">
           <motion.div
             className="absolute inset-0"
             initial={heroPan.initial}
@@ -76,9 +76,11 @@ export default function HomePage() {
               className="object-cover object-center"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent pointer-events-none" />
+            {/* Leica vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
           </motion.div>
 
+          {/* Hero Content */}
           <div className="relative z-20 px-6 text-center max-w-3xl">
             <h1 className="text-white text-4xl md:text-6xl lg:text-7xl leading-tight font-light tracking-tight">
               STORIES THAT STAY.
@@ -91,18 +93,18 @@ export default function HomePage() {
               crafted with precision and intention.
             </p>
 
-            {/* Buttons (Option B): Primary white, Secondary red */}
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {/* Buttons: Primary white, Secondary red */}
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/portfolio"
-                className="inline-flex items-center justify-center bg-white text-black px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition"
+                className="bg-white text-black px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition"
               >
                 View Our Work
               </Link>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center text-white px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:brightness-95 transition"
+                className="text-white px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:brightness-95 transition"
                 style={{ backgroundColor: BRAND_RED }}
               >
                 Book a Strategy Call
@@ -110,7 +112,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="absolute bottom-8 z-20 w-full text-center text-white/80">
+          {/* Scroll Hint */}
+          <div className="absolute bottom-8 z-20 text-center text-white/80">
             <div className="text-sm tracking-wider">Scroll to explore</div>
             <div className="mt-2 text-2xl">↓</div>
           </div>
@@ -119,12 +122,12 @@ export default function HomePage() {
         {/* ================= PROBLEMS WE SOLVE ================= */}
         <section className="bg-white py-20">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="text-center max-w-2xl mx-auto">
               <div
-                className="inline-block mb-3 w-16 h-[3px]"
+                className="w-16 h-[3px] mx-auto mb-4"
                 style={{ background: BRAND_RED }}
               />
-              <h2 className="text-3xl md:text-4xl font-medium tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-medium">
                 Problems We Solve For Brands
               </h2>
               <p className="mt-4 text-gray-600">
@@ -152,14 +155,14 @@ export default function HomePage() {
                   "Narrative-first creatives with intentional CTAs that drive outcomes.",
                 ],
               ].map(([title, desc], i) => (
-                <motion.article
+                <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 rounded-xl border border-black/5 bg-white shadow-[0_6px_20px_rgba(12,12,14,0.04)]"
+                  className="p-6 bg-white border border-black/5 shadow-sm rounded-xl"
                 >
                   <h3 className="text-lg font-semibold text-black">{title}</h3>
                   <p className="mt-2 text-gray-600">{desc}</p>
-                </motion.article>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -168,14 +171,12 @@ export default function HomePage() {
         {/* ================= SERVICES ================= */}
         <section className="py-20 bg-[#fafafa]">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="text-center max-w-2xl mx-auto">
               <div
-                className="inline-block mb-3 w-16 h-[3px]"
+                className="w-16 h-[3px] mx-auto mb-4"
                 style={{ background: BRAND_RED }}
               />
-              <h3 className="text-3xl md:text-4xl font-medium tracking-tight">
-                Our Services
-              </h3>
+              <h3 className="text-3xl md:text-4xl font-medium">Our Services</h3>
               <p className="mt-4 text-gray-600">
                 End-to-end production, social-first systems, and on-demand
                 studio support.
@@ -196,11 +197,11 @@ export default function HomePage() {
                   "On-Demand Creative",
                   "Plug-in crew, editors and creative direction on demand.",
                 ],
-              ].map(([title, body], i) => (
+              ].map(([title, desc], i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 rounded-xl bg-white border border-black/5 shadow-[0_6px_20px_rgba(12,12,14,0.04)]"
+                  className="p-6 bg-white border border-black/5 shadow-sm rounded-xl"
                 >
                   <h4
                     className="text-lg font-semibold"
@@ -208,25 +209,25 @@ export default function HomePage() {
                   >
                     {title}
                   </h4>
-                  <p className="mt-2 text-gray-600">{body}</p>
+                  <p className="mt-2 text-gray-600">{desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ================= WORK (portfolio) ================= */}
+        {/* ================= PORTFOLIO ================= */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-8">
+            <div className="text-center mb-10">
               <div
-                className="inline-block mb-3 w-16 h-[3px]"
+                className="w-16 h-[3px] mx-auto mb-4"
                 style={{ background: BRAND_RED }}
               />
-              <h3 className="text-3xl md:text-4xl font-medium tracking-tight">
+              <h3 className="text-3xl md:text-4xl font-medium">
                 Work That Speaks for Itself
               </h3>
-              <p className="mt-3 text-gray-600 max-w-3xl mx-auto">
+              <p className="mt-3 text-gray-600">
                 Selected projects. Studio presentation. Clean stills.
               </p>
             </div>
@@ -236,9 +237,9 @@ export default function HomePage() {
                 <Link
                   key={p.id}
                   href={`/case-studies/${p.caseStudyId}`}
-                  className="group block rounded-xl overflow-hidden bg-white shadow-[0_6px_18px_rgba(0,0,0,0.04)] transition"
+                  className="group block rounded-xl overflow-hidden bg-white shadow-sm border border-black/5"
                 >
-                  <div className="w-full h-[220px] bg-gray-100 overflow-hidden">
+                  <div className="h-[220px] bg-gray-100 overflow-hidden">
                     <Image
                       src={p.imageUrl}
                       alt={p.title}
@@ -254,7 +255,7 @@ export default function HomePage() {
                       {p.description}
                     </p>
                     <div
-                      className="mt-3 h-1 w-12"
+                      className="mt-3 h-[3px] w-12"
                       style={{ background: BRAND_RED }}
                     />
                   </div>
@@ -267,12 +268,12 @@ export default function HomePage() {
         {/* ================= TESTIMONIALS ================= */}
         <section className="py-20 bg-[#fff8f8]">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="text-center max-w-2xl mx-auto">
               <div
-                className="inline-block mb-3 w-16 h-[3px]"
+                className="w-16 h-[3px] mx-auto mb-4"
                 style={{ background: BRAND_RED }}
               />
-              <h3 className="text-3xl md:text-4xl font-medium tracking-tight">
+              <h3 className="text-3xl md:text-4xl font-medium">
                 What Our Clients Say
               </h3>
               <p className="mt-4 text-gray-600">
@@ -285,13 +286,13 @@ export default function HomePage() {
                 <motion.blockquote
                   key={i}
                   {...fadeInUp}
-                  className="p-8 bg-white rounded-xl border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]"
+                  className="p-8 bg-white border border-black/5 shadow-sm rounded-xl"
                 >
                   <p className="italic text-gray-700 leading-relaxed">
                     “{t.quote}”
                   </p>
                   <footer
-                    className="mt-6 text-sm font-semibold"
+                    className="mt-6 font-semibold text-sm"
                     style={{ color: BRAND_RED }}
                   >
                     — {t.author}
@@ -305,7 +306,7 @@ export default function HomePage() {
         {/* ================= CTA ================= */}
         <section className="py-24 bg-white text-center">
           <div className="max-w-4xl mx-auto px-6">
-            <h3 className="text-3xl md:text-4xl font-medium tracking-tight">
+            <h3 className="text-3xl md:text-4xl font-medium">
               Ready to Tell Your Story?
             </h3>
             <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
@@ -316,14 +317,14 @@ export default function HomePage() {
             <div className="mt-8 flex justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center bg-white text-black px-8 py-3 rounded-md font-medium shadow-sm hover:shadow-md transition"
+                className="bg-white text-black px-8 py-3 rounded-md font-medium shadow-sm hover:shadow-md transition"
               >
                 Book a Strategy Call
               </Link>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center text-white px-8 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
+                className="text-white px-8 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
                 style={{ background: BRAND_RED }}
               >
                 Get a Quote
