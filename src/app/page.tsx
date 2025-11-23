@@ -7,11 +7,6 @@ import NolanLoader from "@/app/components/NolanLoader";
 import { allProjects } from "@/lib/data";
 import type { Project } from "@/lib/types";
 
-/*
-  FINAL: Leica Slow Cinematic Pan hero using the image in your public folder:
-  /public/hero-kitchen.jpeg
-*/
-
 /* -------- data -------- */
 const featuredProjects: Project[] = allProjects.slice(0, 4);
 
@@ -58,16 +53,14 @@ const fadeInUp = {
 
 /* -------- page -------- */
 export default function HomePage() {
- {
   return (
     <>
-      {/* cinematic loader — your component */}
+      {/* cinematic loader */}
       <NolanLoader />
 
-      <main className="antialiased font-sans text-[color:var(--brand-black,#0A0A0A)]">
-        {/* ================= HERO — Leica Slow Cinematic Pan (FULLSCREEN) ================= */}
+      <main className="antialiased font-sans text-[#0A0A0A]">
+        {/* ================= HERO — Leica Slow Cinematic Pan ================= */}
         <section className="relative w-full h-screen min-h-[720px] flex items-center justify-center overflow-hidden bg-black">
-          {/* slow Ken-Burns background (uses public/hero-kitchen.jpeg) */}
           <motion.div
             className="absolute inset-0"
             initial={heroPan.initial}
@@ -83,11 +76,9 @@ export default function HomePage() {
               className="object-cover object-center"
             />
 
-            {/* minimal vignette to anchor text */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent pointer-events-none" />
           </motion.div>
 
-          {/* Hero content — centered, restrained */}
           <div className="relative z-20 px-6 text-center max-w-3xl">
             <h1 className="text-white text-4xl md:text-6xl lg:text-7xl leading-tight font-light tracking-tight">
               STORIES THAT STAY.
@@ -100,35 +91,32 @@ export default function HomePage() {
               crafted with precision and intention.
             </p>
 
-            {/* Buttons: Option B (Primary: white bg, black text) — (Secondary: red bg, white text) */}
+            {/* Buttons (Option B): Primary white, Secondary red */}
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/portfolio"
                 className="inline-flex items-center justify-center bg-white text-black px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition"
-                aria-label="View Our Work"
               >
                 View Our Work
               </Link>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center bg-[color:var(--brand-red,#C1272D)] text-white px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:brightness-95 transition"
+                className="inline-flex items-center justify-center text-white px-6 py-2 rounded-md text-sm font-medium shadow-sm hover:brightness-95 transition"
                 style={{ backgroundColor: BRAND_RED }}
-                aria-label="Book a Strategy Call"
               >
                 Book a Strategy Call
               </Link>
             </div>
           </div>
 
-          {/* subtle scroll hint */}
           <div className="absolute bottom-8 z-20 w-full text-center text-white/80">
             <div className="text-sm tracking-wider">Scroll to explore</div>
             <div className="mt-2 text-2xl">↓</div>
           </div>
         </section>
 
-        {/* ================= AFTER HERO — White Canvas (Leica luxury) ================= */}
+        {/* ================= PROBLEMS WE SOLVE ================= */}
         <section className="bg-white py-20">
           <div className="max-w-6xl mx-auto px-6">
             <div className="mx-auto max-w-2xl text-center">
@@ -169,12 +157,7 @@ export default function HomePage() {
                   {...fadeInUp}
                   className="p-6 rounded-xl border border-black/5 bg-white shadow-[0_6px_20px_rgba(12,12,14,0.04)]"
                 >
-                  <h3
-                    className="text-lg font-semibold"
-                    style={{ color: BRAND_BLACK }}
-                  >
-                    {title}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-black">{title}</h3>
                   <p className="mt-2 text-gray-600">{desc}</p>
                 </motion.article>
               ))}
@@ -213,7 +196,7 @@ export default function HomePage() {
                   "On-Demand Creative",
                   "Plug-in crew, editors and creative direction on demand.",
                 ],
-              ].map(([h, b], i) => (
+              ].map(([title, body], i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
@@ -223,9 +206,9 @@ export default function HomePage() {
                     className="text-lg font-semibold"
                     style={{ color: BRAND_RED }}
                   >
-                    {h}
+                    {title}
                   </h4>
-                  <p className="mt-2 text-gray-600">{b}</p>
+                  <p className="mt-2 text-gray-600">{body}</p>
                 </motion.div>
               ))}
             </div>
@@ -249,7 +232,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProjects.map((p, i) => (
+              {featuredProjects.map((p) => (
                 <Link
                   key={p.id}
                   href={`/case-studies/${p.caseStudyId}`}
@@ -264,10 +247,9 @@ export default function HomePage() {
                       className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                     />
                   </div>
+
                   <div className="p-4">
-                    <h4 className="font-medium" style={{ color: BRAND_BLACK }}>
-                      {p.title}
-                    </h4>
+                    <h4 className="font-medium text-black">{p.title}</h4>
                     <p className="text-sm text-gray-600 mt-1">
                       {p.description}
                     </p>
@@ -341,7 +323,7 @@ export default function HomePage() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center bg-[color:var(--brand-red,#C1272D)] text-white px-6 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
+                className="inline-flex items-center justify-center text-white px-8 py-3 rounded-md font-medium shadow-sm hover:brightness-95 transition"
                 style={{ background: BRAND_RED }}
               >
                 Get a Quote
