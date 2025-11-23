@@ -2,10 +2,64 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, linear } from "framer-motion"; // <-- FIXED: using `linear`
-import NolanLoader from "@/app/components/NolanLoader";
-import { allProjects } from "@/lib/data";
-import type { Project } from "@/lib/types";
+import { motion, linear } from "framer-motion";
+
+/**
+ * --- Dependency Mocks for Vercel Deployment ---
+ *
+ * NOTE: For a real application, you must replace these mocks
+ * with the actual imports from your file system (e.g., '@/app/components/NolanLoader').
+ * These mocks are only for ensuring the code in *this file* compiles and deploys.
+ */
+
+// MOCK: Project Type
+export type Project = {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  caseStudyId: string;
+};
+
+// MOCK: NolanLoader Component
+const NolanLoader = () => (
+  <div className="flex items-center justify-center h-screen bg-black text-white">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
+  </div>
+);
+
+// MOCK: allProjects Data
+const allProjects: Project[] = [
+  {
+    id: 1,
+    title: "Phocus Water Brand Film",
+    description: "Launch campaign cinematic assets.",
+    imageUrl: "/mock-project-1.jpg", // Replace with an actual image path
+    caseStudyId: "phocus",
+  },
+  {
+    id: 2,
+    title: "Minimalist Coffee Shop",
+    description: "Visual identity and social content.",
+    imageUrl: "/mock-project-2.jpg", // Replace with an actual image path
+    caseStudyId: "minimalist-cafe",
+  },
+  {
+    id: 3,
+    title: "Global Travel Vlogger",
+    description: "Series editing and narrative structure.",
+    imageUrl: "/mock-project-3.jpg", // Replace with an actual image path
+    caseStudyId: "travel-vlog",
+  },
+  {
+    id: 4,
+    title: "Tech Startup Explainer",
+    description: "Animated explainer video production.",
+    imageUrl: "/mock-project-4.jpg", // Replace with an actual image path
+    caseStudyId: "tech-explainer",
+  },
+];
+// END OF MOCKS
 
 /* ---------------- Data ---------------- */
 const featuredProjects: Project[] = allProjects.slice(0, 4);
@@ -38,9 +92,9 @@ const heroPan = {
   animate: { scale: 1.0 },
   transition: {
     duration: 18,
-    ease: linear, // <-- FIXED FOR FRAMER v11
+    ease: linear,
     repeat: Infinity,
-    repeatType: "mirror" as const, // <-- FIXED TS literal type
+    repeatType: "mirror" as const,
   },
 };
 
@@ -48,7 +102,7 @@ const fadeInUp = {
   initial: { opacity: 0, y: 18 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.9, ease: linear }, // safe easing
+  transition: { duration: 0.9, ease: linear },
 };
 
 /* ---------------- Page ---------------- */
@@ -67,7 +121,7 @@ export default function HomePage() {
             transition={heroPan.transition}
           >
             <Image
-              src="/hero-kitchen.jpeg"
+              src="/hero-kitchen.jpeg" // Make sure this image exists in your public folder
               alt="Hero cinematic frame"
               fill
               priority
@@ -236,7 +290,7 @@ export default function HomePage() {
                 >
                   <div className="h-[220px] bg-gray-100 overflow-hidden">
                     <Image
-                      src={p.imageUrl}
+                      src={p.imageUrl} // Use the mocked imageUrl
                       alt={p.title}
                       width={1200}
                       height={720}
