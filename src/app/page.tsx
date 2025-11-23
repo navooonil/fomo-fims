@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, linear } from "framer-motion"; // <-- FIXED: using `linear`
 import NolanLoader from "@/app/components/NolanLoader";
 import { allProjects } from "@/lib/data";
 import type { Project } from "@/lib/types";
@@ -28,19 +28,19 @@ const testimonials = [
   },
 ];
 
-/* ---------------- Brand Tokens ---------------- */
+/* ---------------- Branding ---------------- */
 const BRAND_RED = "#C1272D";
 const BRAND_BLACK = "#0A0A0A";
 
-/* ---------------- Animation Presets ---------------- */
+/* ---------------- Motion Presets ---------------- */
 const heroPan = {
   initial: { scale: 1.06 },
   animate: { scale: 1.0 },
   transition: {
     duration: 18,
-    ease: "linear",
+    ease: linear, // <-- FIXED FOR FRAMER v11
     repeat: Infinity,
-    repeatType: "mirror" as const, // FIXED FOR TS
+    repeatType: "mirror" as const, // <-- FIXED TS literal type
   },
 };
 
@@ -48,14 +48,13 @@ const fadeInUp = {
   initial: { opacity: 0, y: 18 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.9, ease: "easeOut" },
+  transition: { duration: 0.9, ease: linear }, // safe easing
 };
 
 /* ---------------- Page ---------------- */
 export default function HomePage() {
   return (
     <>
-      {/* Loader */}
       <NolanLoader />
 
       <main className="antialiased font-sans text-[#0A0A0A]">
@@ -66,7 +65,6 @@ export default function HomePage() {
             initial={heroPan.initial}
             animate={heroPan.animate}
             transition={heroPan.transition}
-            aria-hidden
           >
             <Image
               src="/hero-kitchen.jpeg"
@@ -76,11 +74,9 @@ export default function HomePage() {
               className="object-cover object-center"
             />
 
-            {/* Leica vignette */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
           </motion.div>
 
-          {/* Hero Content */}
           <div className="relative z-20 px-6 text-center max-w-3xl">
             <h1 className="text-white text-4xl md:text-6xl lg:text-7xl leading-tight font-light tracking-tight">
               STORIES THAT STAY.
@@ -93,7 +89,7 @@ export default function HomePage() {
               crafted with precision and intention.
             </p>
 
-            {/* Buttons: Primary white, Secondary red */}
+            {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/portfolio"
@@ -112,7 +108,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Scroll Hint */}
           <div className="absolute bottom-8 z-20 text-center text-white/80">
             <div className="text-sm tracking-wider">Scroll to explore</div>
             <div className="mt-2 text-2xl">↓</div>
@@ -160,7 +155,7 @@ export default function HomePage() {
                   {...fadeInUp}
                   className="p-6 bg-white border border-black/5 shadow-sm rounded-xl"
                 >
-                  <h3 className="text-lg font-semibold text-black">{title}</h3>
+                  <h3 className="text-lg font-semibold">{title}</h3>
                   <p className="mt-2 text-gray-600">{desc}</p>
                 </motion.div>
               ))}
@@ -292,7 +287,7 @@ export default function HomePage() {
                     “{t.quote}”
                   </p>
                   <footer
-                    className="mt-6 font-semibold text-sm"
+                    className="mt-6 text-sm font-semibold"
                     style={{ color: BRAND_RED }}
                   >
                     — {t.author}
