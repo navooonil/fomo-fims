@@ -57,7 +57,8 @@ const fadeInUp = {
 };
 
 /* -------- page -------- */
-export default function HomePage(): JSX.Element {
+export default function HomePage() {
+ {
   return (
     <>
       {/* cinematic loader — your component */}
