@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { MenuIcon, XIcon, LogoIcon } from "./icons";
+import { MenuIcon, XIcon } from "./icons";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -19,11 +20,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Scroll effect for sticky background
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -38,13 +36,21 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* --- LOGO (fixed, cinematic, not cropped) --- */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
-            <Link
-              href="/"
-              className="flex items-center text-2xl font-bold tracking-tight text-gray-900 hover:text-brand-red transition-colors"
-            >
-              <LogoIcon className="h-12 w-auto" />
+            <Link href="/" className="flex items-center gap-3">
+              <div className="relative w-[46px] h-[46px]">
+                <Image
+                  src="/logo.jpeg"
+                  alt="Fomo Films Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+
+              <span className="hidden sm:block font-heading text-xl font-semibold tracking-wide text-gray-900">
+                FOMO FILMS
+              </span>
             </Link>
           </motion.div>
 
@@ -54,13 +60,11 @@ export default function Header() {
               <motion.div key={link.name} whileHover={{ y: -2 }}>
                 <Link
                   href={link.path}
-                  className={`px-3 py-2 text-sm font-medium transition-colors rounded-md
-                      ${
-                        pathname === link.path
-                          ? "text-brand-red font-semibold"
-                          : "text-gray-600 hover:text-brand-red"
-                      }
-                    `}
+                  className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
+                    pathname === link.path
+                      ? "text-brand-red font-semibold"
+                      : "text-gray-600 hover:text-brand-red"
+                  }`}
                 >
                   {link.name}
                 </Link>
@@ -80,7 +84,7 @@ export default function Header() {
             </motion.div>
           </div>
 
-          {/* Mobile Burger Icon */}
+          {/* Mobile Menu Button */}
           <div className="md:hidden -mr-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -107,13 +111,11 @@ export default function Header() {
                 key={link.name}
                 href={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors
-                    ${
-                      pathname === link.path
-                        ? "text-brand-red bg-gray-100 font-semibold"
-                        : "text-gray-600 hover:text-brand-red hover:bg-gray-100"
-                    }
-                  `}
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  pathname === link.path
+                    ? "text-brand-red bg-gray-100 font-semibold"
+                    : "text-gray-600 hover:text-brand-red hover:bg-gray-100"
+                }`}
               >
                 {link.name}
               </Link>
